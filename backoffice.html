@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BackOffice Stock X</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+    body {
+      font-family: "Roboto Condensed", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-nav w-100 ">
+      <div class="container-fluid ">
+        <div class="d-flex">
+          <a class="navbar-brand" href="#">
+            <img src="/assets/img/logo1.png" alt="logo" width="100" height="33">
+          </a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./backoffice.html">Backoffice</a>
+              </li>
+
+            </ul>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+    </nav>
+  </header>
+
+  <div class="d-flex">
+    <div id="form" class="d-flex flex-column ms-4 mt-5 mb-2">
+      <h2 class="pb-4 fw-bolder">Inserisci prodotto</h2>
+      <!-- <label for="name">Name:</label> -->
+      <input type="text" id="name" name="name" placeholder="Nome Prodotto"
+        class="mb-3 form-control border-1 rounded border border-secondary-subtle">
+      <!-- <label for="description">Description:</label> -->
+      <input type="text" id="description" name="description" placeholder="Descrizione"
+        class="mb-3 form-control border-1 rounded border-secondary-subtle">
+      <!-- <label for="brand">Brand:</label> -->
+      <input type="text" id="brand" name="brand" placeholder="Brand Prodotto"
+        class="mb-3  form-control border-1 rounded border-secondary-subtle">
+      <!-- <label for="price">Price:</label> -->
+      <input type="number" id="price" name="price" placeholder="Prezzo Prodotto"
+        class="mb-3 form-control border-1 rounded border-secondary-subtle">
+      <!-- <label for="img">Image URL:</label> -->
+      <input type="text" id="image" name="image" placeholder="Url Immagine"
+        class="mb-2 form-control border-1 rounded border-secondary-subtle">
+      <button id="btn" class="mt-2 border-1 btn btn-success " onclick="aggiungiProdotto()">Aggiungi Prodotto</button>
+
+
+    </div>
+    <div id="tabellaProdotti" class=" text-center ms-5 mt-5 table-responsive">
+      <h2 class="pb-4 fw-bolder">Lista prodotti inseriti</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="prodottiAggiunti" class="table-group-divider">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="deleteModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sei sicuro di voler cancellare?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            onclick="chiudiModal()"></button>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="chiudiModal()">No</button>
+          <div id="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cosa vuoi modificare?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            onclick="chiudiModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div id="form" class="d-flex flex-column w-100">
+            <label for="name">Nome:</label>
+            <input type="text" id="name_edit" name="name" placeholder="Nome Prodotto"
+              class="mb-3 form-control border-1 rounded border border-secondary-subtle">
+            <input type="text" id="id_mod" name="id" placeholder="id"
+              class="mb-3 form-control border-1 rounded border border-secondary-subtle d-none">
+            <label for="description">Descrizione:</label>
+            <input type="text" id="description_edit" name="description" placeholder="Descrizione"
+              class="mb-3 form-control border-1 rounded border-secondary-subtle">
+            <label for="brand">Brand prodotto:</label>
+            <input type="text" id="brand_edit" name="brand" placeholder="Brand Prodotto"
+              class="mb-3  form-control border-1 rounded border-secondary-subtle">
+            <label for="price">Prezzo:</label>
+            <input type="number" id="price_edit" name="price" placeholder="Prezzo Prodotto"
+              class="mb-3 form-control border-1 rounded border-secondary-subtle">
+            <label for="img">URL Immagine:</label>
+            <input type="text" id="image_edit" name="image" placeholder="Url Immagine"
+              class="mb-2 form-control border-1 rounded border-secondary-subtle">
+          </div>
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="modificaProdotto()">Modifica
+            prodotto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <div id="renderModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            onclick="chiudiModal()"></button>
+        </div>
+        <div id="modal-body" class="modal-body">
+        </div>
+        <div id="modal-footerR" class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="overlay" class="overlay d-none"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="/script.js"></script>
+</body>
+
+</html>
